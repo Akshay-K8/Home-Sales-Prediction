@@ -1,5 +1,5 @@
-streamlit
+streamlit==1.29.0
 Pillow
-google-generativeai
+google-generativeai==0.3.1
 speech_recognition
 pyttsx3
