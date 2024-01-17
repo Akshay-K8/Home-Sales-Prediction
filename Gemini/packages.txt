@@ -1,4 +1,4 @@
-portaudio19-dev
+portaudio-dev
 
 
 
