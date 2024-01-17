@@ -2,8 +2,8 @@ import streamlit as st
 import PIL.Image
 import google.generativeai as genai
 import os
+import speech_recognition as sr
 import pyttsx3
-from webrecorder import Recorder
 
 # Set your API key
 os.environ["API_KEY"] = "AIzaSyBxafJnDqm_iOrSoy-4bsQz6R6lFrIH1-M"
@@ -13,26 +13,28 @@ genai.configure(api_key=os.environ["API_KEY"])
 model_text = genai.GenerativeModel('gemini-pro')
 model_vision = genai.GenerativeModel('gemini-pro-vision')
 
-# Text-to-speech function
+# Speech recognition functions
 def speak(text):
     engine = pyttsx3.init()
     engine.say(text)
     engine.runAndWait()
 
-# Speech recognition using webrecorder
 def recognize_speech():
-    with st.spinner('Listening...'):
-        speak("Say something...")
-
-        # Create a webrecorder instance
-        recorder = Recorder()
-
-        # Record audio for 3 seconds
-        audio_data = recorder.record(duration=3)
+    recognizer = sr.Recognizer()
+    with sr.Microphone() as source:
+        with st.spinner('Listening...'):
+            speak("Say something...")
+            recognizer.adjust_for_ambient_noise(source)
+            
+            try:
+                audio = recognizer.listen(source, timeout=3)
+            except sr.WaitTimeoutError:
+                speak("Timeout error. Please speak within the specified time.")
+                return None
 
     try:
         speak("Recognizing...")
-        text = "Example recognition using webrecorder"  # Replace with your recognition logic
+        text = recognizer.recognize_google(audio)
         speak(f"You said {text}.")
         return text
     except Exception as e:
@@ -54,19 +56,19 @@ def main():
     user_image = st.file_uploader("Upload an image:", type=["jpg", "jpeg", "png"])
 
     if option == "Write":
-        user_text = st.text_area("Enter your prompt (text):", "")
+            user_text = st.text_area("Enter your prompt (text):", "")
 
     # Button to generate output
     if st.button("Generate Output"):
         # Handle different cases based on user input
         if option == "Speak":
             # Speech recognition
-            recognized_text = recognize_speech()
 
+            recognized_text = recognize_speech()
+    
             if recognized_text:
                 user_text = st.text_area("Enter your prompt (text):", f"{recognized_text}")
 
-        # Rest of your code remains unchanged
         if user_text and user_image:
             # Both text and image provided
             st.write("Using model_vision for combined text and image input.")
@@ -82,6 +84,7 @@ def main():
         else:
             # No input provided
             st.warning("Please enter a prompt (text) and/or upload an image.")
+            return
 
         # Display the generated output without the copy functionality
         st.subheader("Generated Output:")
