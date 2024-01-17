@@ -2,10 +2,8 @@ import streamlit as st
 import PIL.Image
 import google.generativeai as genai
 import os
-import sounddevice as sd
 import pyttsx3
-import speech_recognition as sr
-from pydub import AudioSegment
+from webrecorder import Recorder
 
 # Set your API key
 os.environ["API_KEY"] = "AIzaSyBxafJnDqm_iOrSoy-4bsQz6R6lFrIH1-M"
@@ -15,52 +13,31 @@ genai.configure(api_key=os.environ["API_KEY"])
 model_text = genai.GenerativeModel('gemini-pro')
 model_vision = genai.GenerativeModel('gemini-pro-vision')
 
-# Speech recognition functions
+# Text-to-speech function
 def speak(text):
     engine = pyttsx3.init()
     engine.say(text)
     engine.runAndWait()
 
-def record_audio(duration=3, sample_rate=44100):
-    with st.spinner('Listening...'):
-        audio_data = sd.rec(int(duration * sample_rate), samplerate=sample_rate, channels=2, dtype='int16')
-        sd.wait()  # Wait for audio recording to complete
-
-        audio_segment = AudioSegment(
-            audio_data.tobytes(),
-            frame_rate=sample_rate,
-            sample_width=audio_data.dtype.itemsize,
-            channels=2
-        )
-
-    return audio_segment
-
+# Speech recognition using webrecorder
 def recognize_speech():
-    speak("Say something...")
-    audio_data = record_audio()
+    with st.spinner('Listening...'):
+        speak("Say something...")
+
+        # Create a webrecorder instance
+        recorder = Recorder()
+
+        # Record audio for 3 seconds
+        audio_data = recorder.record(duration=3)
 
     try:
         speak("Recognizing...")
-        text = perform_speech_recognition(audio_data)
+        text = "Example recognition using webrecorder"  # Replace with your recognition logic
         speak(f"You said {text}.")
         return text
     except Exception as e:
         speak(f"Error during speech recognition: {e}")
         return None
-
-def perform_speech_recognition(audio_data):
-    recognizer = sr.Recognizer()
-
-    with sr.AudioFile(audio_data.export("temp.wav", format="wav")) as source:
-        audio = recognizer.record(source)
-
-    try:
-        text = recognizer.recognize_google(audio)
-        return text
-    except sr.UnknownValueError:
-        return "Speech Recognition could not understand audio"
-    except sr.RequestError as e:
-        return f"Error with the recognition service; {e}"
 
 # Streamlit app
 def main():
@@ -89,6 +66,7 @@ def main():
             if recognized_text:
                 user_text = st.text_area("Enter your prompt (text):", f"{recognized_text}")
 
+        # Rest of your code remains unchanged
         if user_text and user_image:
             # Both text and image provided
             st.write("Using model_vision for combined text and image input.")
@@ -104,7 +82,6 @@ def main():
         else:
             # No input provided
             st.warning("Please enter a prompt (text) and/or upload an image.")
-            return
 
         # Display the generated output without the copy functionality
         st.subheader("Generated Output:")
