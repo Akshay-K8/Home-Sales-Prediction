@@ -60,7 +60,7 @@ def main():
 # Function to validate Gemini API key
 def validate_gemini_api_key(api_key):
     # Replace 'YOUR_GEMINI_API_URL' with the actual Gemini API URL
-    gemini_api_url = 'YOUR_GEMINI_API_URL'
+    gemini_api_url = 'https://api.gemini.com/v1/mytrades'
     headers = {'Authorization': f'Bearer {api_key}'}
 
     try:
