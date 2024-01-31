@@ -4,7 +4,7 @@ import google.generativeai as genai
 import os
 
 # Set your API key
-os.environ["API_KEY"] = "AIzaSyBxafJnDqm_iOrSoy-4bsQz6R6lFrIH1-M"
+os.environ["API_KEY"] = key
 genai.configure(api_key=os.environ["API_KEY"])
 
 # Initialize models
@@ -15,6 +15,7 @@ model_vision = genai.GenerativeModel('gemini-pro-vision')
 def main():
     # Title
     st.title("TalkToGemini")
+    key=st.text_input('Enter your Gemini API_key')
 
     # User input: Image
     user_image = st.file_uploader("Upload an image:", type=["jpg", "jpeg", "png"])
