@@ -7,7 +7,7 @@ import requests
 # Streamlit app
 def main():
     # Title
-    os.environ["API_KEY"] = f"{st.secrets["API_KEY"])}"
+    os.environ["API_KEY"] = f"{st.secrets["API_KEY"]}"
     genai.configure(api_key=os.environ["API_KEY"])
 
     st.title("TalkToGemini")  
