@@ -28,7 +28,7 @@ def main():
         if user_text and user_image:
             # Both text and image provided
              st.write("Using model_vision for combined text and image input.")
-            response = model_vision.generate_content([user_text, PIL.Image.open(user_image)])
+             response = model_vision.generate_content([user_text, PIL.Image.open(user_image)])
         elif user_text:
             # Only text provided
             st.write("Using model_text for text input.")
