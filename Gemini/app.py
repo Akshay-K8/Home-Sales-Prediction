@@ -7,12 +7,10 @@ import requests
 # Streamlit app
 def main():
     # Title
+    os.environ["API_KEY"] = "AIzaSyBxafJnDqm_iOrSoy-4bsQz6R6lFrIH1-M"
+    genai.configure(api_key=os.environ["API_KEY"])
+
     st.title("TalkToGemini")  
-
-    # Set your API key
-    os.getenv("GOOGLE_API_KEY")
-    genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-
     # Initialize models
     model_text = genai.GenerativeModel('gemini-pro')
     model_vision = genai.GenerativeModel('gemini-pro-vision')
