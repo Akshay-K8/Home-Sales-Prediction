@@ -40,7 +40,8 @@ Welcome to my collection of **Mini Data Science Projects**! 🌟 This repository
 ├── IMDB_Rating/
 ├── Indian_Agri_Analysis/
 ├── Loan_Prediction/
-
+```
+---
 🛠️ Tools and Libraries
 Each project uses various tools and libraries such as:
 
