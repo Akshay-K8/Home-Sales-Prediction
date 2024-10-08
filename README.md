@@ -5,11 +5,6 @@ Welcome to my collection of **Mini Data Science Projects**! 🌟 This repository
 ---
 
 ## 🌱 Projects Overview
-
-### 🥝🍎 Fruits and Veggies Detection
-- **Description:** This project uses **Computer Vision** techniques to detect and classify fruits and vegetables based on their visual features. Perfect for applications in food recognition and inventory systems.
-- **Technologies:** `Python`, `Keras`, `OpenCV`, `CNN`
-
 ### ♊ Gemini Chatbox
 - **Description:** A **Chatbox** application where users can pass prompts and receive responses via the **Gemini API**. The project demonstrates how to integrate APIs and build a dynamic chat interface for real-time interaction.
 - **Technologies:** `Gemini API`, `Flask`, `HTML/CSS`, `JavaScript`
